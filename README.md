@@ -42,17 +42,17 @@ curl https://raw.githubusercontent.com/IvanEstradaa/bypass-mdm/refs/heads/ivan/b
 
 12. Finally the script will prompt you that it finished bypassing and will automatically Reboot your Mac.
 
-13. After Reboot. Sign in with user (Apple) & password (1234)
+13. After Reboot. Sign in with user (apple) & password (1234)
 
 14. Skip all setup (Apple ID, Siri, Touch ID, Location Services)
 
 15. Once on the desktop navigate to System Settings > Users and Groups, and create your real Admin account.
 
-16. Log out of the Apple profile, and sign in into your real profile.
+16. Log out of the apple profile, and sign in into your real profile.
 
 17. Feel free set up properly now (Apple ID, Siri, Touch ID, Location Services).
 
-18. Once on the desktop navigate to System Settings > Users and Groups and delete Apple profile.
+18. Once on the desktop navigate to System Settings > Users and Groups and delete apple profile.
 
 19. Congratulations, you're MDM free! 💫
 

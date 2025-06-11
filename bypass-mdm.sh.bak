@@ -11,13 +11,8 @@ NC='\033[0m'
 
 echo -e "${YEL}Bypass MDM from Recovery${NC}"
 
-echo -e "${BLU}Fetching System Volume name"
-system_volume=$(diskutil info / | grep  "Volume Name" | awk -F': ' '{print $2}' | xargs) # Returns something like: "Macintosh HD"
-echo "${GRN}$system_volume"
-
-if [ -d "/Volumes/$system_volume - Data" ]; then
-    echo "${BLU}Renaming '$system_volume - Data' to 'Data'"
-    diskutil rename "$system_volume - Data" "Data"
+if [ -d "/Volumes/Macintosh HD - Data" ]; then
+    diskutil rename "Macintosh HD - Data" "Data"
 fi
 
 dscl_path='/Volumes/Data/private/var/db/dslocal/nodes/Default'
@@ -33,17 +28,17 @@ dscl -f "$dscl_path" localhost -passwd "/Local/Default/Users/apple" "1234"
 dscl -f "$dscl_path" localhost -append "/Local/Default/Groups/admin" GroupMembership "apple"
 
 echo "${BLU}Blocking MDM domains"
-echo "0.0.0.0 deviceenrollment.apple.com" >>/Volumes/"$system_volume"/etc/hosts
-echo "0.0.0.0 mdmenrollment.apple.com" >>/Volumes/"$system_volume"/etc/hosts
-echo "0.0.0.0 iprofiles.apple.com" >>/Volumes/"$system_volume"/etc/hosts
+echo "0.0.0.0 deviceenrollment.apple.com" >>/Volumes/Macintosh\ HD/etc/hosts
+echo "0.0.0.0 mdmenrollment.apple.com" >>/Volumes/Macintosh\ HD/etc/hosts
+echo "0.0.0.0 iprofiles.apple.com" >>/Volumes/Macintosh\ HD/etc/hosts
 echo -e "${GRN}Successfully blocked MDM & Profile Domains"
 
 echo "${BLU}Removing configuration profiles"
 touch /Volumes/Data/private/var/db/.AppleSetupDone
-rm -rf /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigHasActivationRecord
-rm -rf /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordFound
-touch /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigProfileInstalled
-touch /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordNotFound
+rm -rf /Volumes/Macintosh\ HD/var/db/ConfigurationProfiles/Settings/.cloudConfigHasActivationRecord
+rm -rf /Volumes/Macintosh\ HD/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordFound
+touch /Volumes/Macintosh\ HD/var/db/ConfigurationProfiles/Settings/.cloudConfigProfileInstalled
+touch /Volumes/Macintosh\ HD/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordNotFound
 
 echo -e "${GRN}MDM enrollment has been bypassed!${NC}"
 echo -e "${NC}Rebooting your Mac...${NC}"
