@@ -1,7 +1,5 @@
 # Bypass-MDM for MacOS 💻
 
-![mdm-screen](https://raw.githubusercontent.com/assafdori/bypass-mdm/main/mdm-screen.png)
-
 #### Prerequisites ⚠️
 
 - **It is advised to erase the hard-drive prior to starting.**
@@ -36,15 +34,15 @@ curl https://raw.githubusercontent.com/assafdori/bypass-mdm/main/bypass-mdm.sh -
 
 8. Paste (<kbd>CMD</kbd> + <kbd>V</kbd>) and Run the script (<kbd>ENTER</kbd>).
 
-9. Input 1 for Autobypass.
+9. The script will prompt you that is creating temp user.
 
-10. Press Enter to leave the default username 'Apple'.
+10. The script will prompt you that is blocking MDM domains.
 
-11. Press Enter to leave the default  password '1234'.
+11. The script will prompt you that is removing configuration profiles.
 
-12. Wait for the script to finish & Reboot your Mac.
+12. Finally the script will prompt you that it finished bypassing and will automatically Reboot your Mac.
 
-13. Sign in with user (Apple) & password (1234)
+13. After Reboot. Sign in with user (Apple) & password (1234)
 
 14. Skip all setup (Apple ID, Siri, Touch ID, Location Services)
 
