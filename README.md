@@ -27,10 +27,10 @@
 6. Copy the script below:
 
 ```zsh
-curl https://raw.githubusercontent.com/IvanEstradaa/bypass-mdm/refs/heads/ivan/bypass-mdm.sh -o bypass-mdm.sh && chmod +x ./bypass-mdm.sh && ./bypass-mdm.sh
+curl https://raw.githubusercontent.com/IvanEstradaa/bypass-mdm/HEAD/bypass-mdm.sh -o bypass-mdm.sh && chmod +x ./bypass-mdm.sh && ./bypass-mdm.sh
 ```
 
-7. Launch Terminal (Utilities > Terminal).
+7. Launch Terminal (Utilities > Terminal or <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd>).
 
 8. Paste (<kbd>CMD</kbd> + <kbd>V</kbd>) and Run the script (<kbd>ENTER</kbd>).
 
@@ -42,7 +42,7 @@ curl https://raw.githubusercontent.com/IvanEstradaa/bypass-mdm/refs/heads/ivan/b
 
 12. Finally the script will prompt you that it finished bypassing and will automatically Reboot your Mac.
 
-13. After Reboot. Sign in with user (apple) & password (1234)
+13. After Reboot. Sign in with user & password. Default: **apple**
 
 14. Skip all setup (Apple ID, Siri, Touch ID, Location Services)
 

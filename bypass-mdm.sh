@@ -20,22 +20,31 @@ if [ -d "/Volumes/$system_volume - Data" ]; then
     diskutil rename "$system_volume - Data" "Data"
 fi
 
-dscl_path='/Volumes/Data/private/var/db/dslocal/nodes/Default'
 echo -e "${BLU}Creating Temporary User"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/apple"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/apple" UserShell "/bin/zsh"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/apple" RealName "apple"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/apple" UniqueID "501"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/apple" PrimaryGroupID "20"
-mkdir -p "/Volumes/Data/Users/apple"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/apple" NFSHomeDirectory "/Users/apple"
-dscl -f "$dscl_path" localhost -passwd "/Local/Default/Users/apple" "1234"
-dscl -f "$dscl_path" localhost -append "/Local/Default/Groups/admin" GroupMembership "apple"
+dscl_path='/Volumes/Data/private/var/db/dslocal/nodes/Default'
+real_name="apple"
+username="apple"
+password="apple"
+echo "${GRN}Password: $password"
+dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username"
+dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" UserShell "/bin/zsh"
+dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" RealName "$real_name"
+dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" UniqueID "501"
+dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" PrimaryGroupID "20"
+mkdir -p "/Volumes/Data/Users/$username"
+dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" NFSHomeDirectory "/Users/$username"
+dscl -f "$dscl_path" localhost -passwd "/Local/Default/Users/$username" "$password"
+dscl -f "$dscl_path" localhost -append "/Local/Default/Groups/admin" GroupMembership "$username"
 
 echo "${BLU}Blocking MDM domains"
-echo "0.0.0.0 deviceenrollment.apple.com" >>/Volumes/"$system_volume"/etc/hosts
-echo "0.0.0.0 mdmenrollment.apple.com" >>/Volumes/"$system_volume"/etc/hosts
-echo "0.0.0.0 iprofiles.apple.com" >>/Volumes/"$system_volume"/etc/hosts
+mdm_domains=( "
+   deviceenrollment.apple.com  mdmenrollment.apple.com  iprofiles.apple.com  gdmf.apple.com  acmdm.apple.com 
+   albert.apple.com  mdm.apple.com  mdmenroll.apple.com  mdmcheckin.apple.com  school.apple.com
+   mdm.amazon.com deviceenrollment.amazon.com
+" )
+for domain in $mdm_domains; do
+  echo "0.0.0.0 $domain" >> /Volumes/"$system_volume"/etc/hosts
+done
 echo -e "${GRN}Successfully blocked MDM & Profile Domains"
 
 echo "${BLU}Removing configuration profiles"
