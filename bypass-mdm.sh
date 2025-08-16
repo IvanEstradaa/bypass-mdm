@@ -37,12 +37,12 @@ dscl -f "$dscl_path" localhost -passwd "/Local/Default/Users/$username" "$passwo
 dscl -f "$dscl_path" localhost -append "/Local/Default/Groups/admin" GroupMembership "$username"
 
 echo "${BLU}Blocking MDM domains"
-mdm_domains=( "
-   deviceenrollment.apple.com  mdmenrollment.apple.com  iprofiles.apple.com  gdmf.apple.com  acmdm.apple.com 
-   albert.apple.com  mdm.apple.com  mdmenroll.apple.com  mdmcheckin.apple.com  school.apple.com
-   mdm.amazon.com deviceenrollment.amazon.com
-" )
-for domain in $mdm_domains; do
+mdm_domains=( 
+  "deviceenrollment.apple.com"  "mdmenrollment.apple.com"  "iprofiles.apple.com"  "gdmf.apple.com"  "acmdm.apple.com"
+   "albert.apple.com"  "mdm.apple.com"  "mdmenroll.apple.com"  "mdmcheckin.apple.com"  "school.apple.com"
+   "mdm.amazon.com"  "deviceenrollment.amazon.com"
+)
+for domain in "${mdm_domains[@]}"; do
   echo "0.0.0.0 $domain" >> /Volumes/"$system_volume"/etc/hosts
 done
 echo -e "${GRN}Successfully blocked MDM & Profile Domains"
