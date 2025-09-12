@@ -11,32 +11,36 @@ NC='\033[0m'
 
 echo -e "${YEL}Bypass MDM from Recovery${NC}"
 
-echo -e "${BLU}Fetching System Volume name"
+echo -e "${BLU}Fetching System Volume name${NC}"
 system_volume=$(diskutil info / | grep  "Volume Name" | awk -F': ' '{print $2}' | xargs) # Returns something like: "Macintosh HD"
-echo "${GRN}$system_volume"
+echo -e "${GRN}$system_volume${NC}"   
 
 if [ -d "/Volumes/$system_volume - Data" ]; then
-    echo "${BLU}Renaming '$system_volume - Data' to 'Data'"
+    echo -e "${BLU}Renaming '$system_volume - Data' to 'Data'${NC}"
     diskutil rename "$system_volume - Data" "Data"
 fi
 
-echo -e "${BLU}Creating Temporary User"
-dscl_path='/Volumes/Data/private/var/db/dslocal/nodes/Default'
+echo -e "${BLU}Creating Temporary User${NC}"
 real_name="apple"
 username="apple"
 password="apple"
-echo "${GRN}Password: $password"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" UserShell "/bin/zsh"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" RealName "$real_name"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" UniqueID "501"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" PrimaryGroupID "20"
-mkdir -p "/Volumes/Data/Users/$username"
-dscl -f "$dscl_path" localhost -create "/Local/Default/Users/$username" NFSHomeDirectory "/Users/$username"
-dscl -f "$dscl_path" localhost -passwd "/Local/Default/Users/$username" "$password"
-dscl -f "$dscl_path" localhost -append "/Local/Default/Groups/admin" GroupMembership "$username"
 
-echo "${BLU}Blocking MDM domains"
+dscl_path='/Volumes/Data/private/var/db/dslocal/nodes/Default'
+users_path='/Local/Default/Users'
+groups_path='/Local/Default/Groups'
+
+echo -e "${GRN}Password: $password${NC}"
+dscl -f "$dscl_path" localhost -create "$users_path/$username"
+dscl -f "$dscl_path" localhost -create "$users_path/$username" UserShell "/bin/zsh"
+dscl -f "$dscl_path" localhost -create "$users_path/$username" RealName "$real_name"
+dscl -f "$dscl_path" localhost -create "$users_path/$username" UniqueID "501"
+dscl -f "$dscl_path" localhost -create "$users_path/$username" PrimaryGroupID "20"
+mkdir -p "/Volumes/Data/Users/$username"
+dscl -f "$dscl_path" localhost -create "$users_path/$username" NFSHomeDirectory "/Users/$username"
+dscl -f "$dscl_path" localhost -passwd "$users_path/$username" "$password"
+dscl -f "$dscl_path" localhost -append "$groups_path/admin" GroupMembership "$username"
+
+echo -e "${BLU}Blocking MDM domains${NC}"
 mdm_domains=( 
   "deviceenrollment.apple.com"  "mdmenrollment.apple.com"  "iprofiles.apple.com"  "gdmf.apple.com"  "acmdm.apple.com"
    "albert.apple.com"  "mdm.apple.com"  "mdmenroll.apple.com"  "mdmcheckin.apple.com"  "school.apple.com"
@@ -45,14 +49,15 @@ mdm_domains=(
 for domain in "${mdm_domains[@]}"; do
   echo "0.0.0.0 $domain" >> /Volumes/"$system_volume"/etc/hosts
 done
-echo -e "${GRN}Successfully blocked MDM & Profile Domains"
+echo -e "${GRN}Successfully blocked MDM & Profile Domains${NC}"
 
-echo "${BLU}Removing configuration profiles"
+echo -e "${BLU}Removing configuration profiles${NC}"
 touch /Volumes/Data/private/var/db/.AppleSetupDone
-rm -rf /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigHasActivationRecord
-rm -rf /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordFound
-touch /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigProfileInstalled
-touch /Volumes/"$system_volume"/var/db/ConfigurationProfiles/Settings/.cloudConfigRecordNotFound
+confprofile_path="/Volumes/$system_volume/var/db/ConfigurationProfiles/Settings"
+rm -rf $confprofile_path/.cloudConfigHasActivationRecord
+rm -rf $confprofile_path/.cloudConfigRecordFound
+touch $confprofile_path/.cloudConfigProfileInstalled
+touch $confprofile_path/.cloudConfigRecordNotFound
 
 echo -e "${GRN}MDM enrollment has been bypassed!${NC}"
 echo -e "${NC}Rebooting your Mac...${NC}"
