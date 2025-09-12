@@ -43,8 +43,8 @@ dscl -f "$dscl_path" localhost -append "$groups_path/admin" GroupMembership "$us
 echo -e "${BLU}Blocking MDM domains${NC}"
 mdm_domains=( 
   "deviceenrollment.apple.com"  "mdmenrollment.apple.com"  "iprofiles.apple.com"  "gdmf.apple.com"  "acmdm.apple.com"
-   "albert.apple.com"  "mdm.apple.com"  "mdmenroll.apple.com"  "mdmcheckin.apple.com"  "school.apple.com"
-   "mdm.amazon.com"  "deviceenrollment.amazon.com"
+  "albert.apple.com"  "mdm.apple.com"  "mdmenroll.apple.com"  "mdmcheckin.apple.com"  "school.apple.com"
+  "mdm.amazon.com"  "deviceenrollment.amazon.com"  "dexcom.okta.com"  "dexcom.jamfcloud.com"
 )
 for domain in "${mdm_domains[@]}"; do
   echo "0.0.0.0 $domain" >> /Volumes/"$system_volume"/etc/hosts
